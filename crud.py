@@ -38,10 +38,13 @@ def get_books_list(
         limit: int = 10,
         author_id: int | None = None,
 ) -> list[models.DBBook]:
-    queryset = select(models.DBBook).offset(skip).limit(limit)
+    queryset = select(models.DBBook)
 
     if author_id:
-        queryset = queryset.join(models.DBAuthor).where(models.DBAuthor.id == author_id)
+        queryset = (queryset.join(models.DBAuthor)
+                    .where(models.DBAuthor.id == author_id)
+                    .offset(skip)
+                    .limit(limit))
 
     return db.scalars(queryset).all()
 

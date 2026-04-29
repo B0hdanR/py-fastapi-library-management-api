@@ -5,7 +5,10 @@ from sqlalchemy.orm import Session
 
 import crud
 import schemas
-from database import SessionLocal
+import models
+from database import SessionLocal, engine, Base
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
