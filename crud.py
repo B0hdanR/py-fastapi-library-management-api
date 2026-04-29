@@ -40,12 +40,10 @@ def get_books_list(
 ) -> list[models.DBBook]:
     queryset = select(models.DBBook)
 
-    if author_id:
-        queryset = (queryset.join(models.DBAuthor)
-                    .where(models.DBAuthor.id == author_id)
-                    .offset(skip)
-                    .limit(limit))
+    if author_id is not None:
+        queryset = queryset.join(models.DBAuthor).where(models.DBAuthor.id == author_id)
 
+    queryset = queryset.offset(skip).limit(limit)
     return db.scalars(queryset).all()
 
 
